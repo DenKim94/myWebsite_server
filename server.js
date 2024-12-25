@@ -2,6 +2,15 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 
+/**
+ * Sendet eine POST-Anfrage an die angegebene URL, um die CAPTCHA-Antwort zu überprüfen.
+ *
+ * @constant {Response} verifyResponse - Die Antwort der Überprüfungsanfrage.
+ * @param {string} verifyUrl - Die URL, an die die Überprüfungsanfrage gesendet wird.
+ * @param {string} CAPTCHA_SECRET_KEY - Der geheime Schlüssel für die CAPTCHA-Überprüfung.
+ * @param {string} captchaToken - Das vom Benutzer erhaltene CAPTCHA-Token.
+ * @returns {Promise<Response>} - Ein Promise, das die Antwort der Überprüfungsanfrage enthält.
+ */
 
 // Laden und prüfen der Umgebungsvariablen
 dotenv.config();
