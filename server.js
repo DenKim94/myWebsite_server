@@ -22,7 +22,7 @@ if (!CAPTCHA_SECRET_KEY || !URL_CLIENT) {
 
 // Blacklist aus der .env-Datei in ein Array umwandeln
 const emailBlacklist = EMAIL_BLACKLIST ? EMAIL_BLACKLIST.split(',').map(email => email.trim().toLowerCase()) : [];
-console.log('Blacklist: ', emailBlacklist);
+console.log('>> Blacklist: ', emailBlacklist);
 
 const app = express();
 
@@ -38,6 +38,7 @@ app.post('/api/validate-captcha', async (req, res) => {
 
     // Captcha-Token und E-Mail vom Client erhalten
     const { captchaToken, userEmail } = req.body;
+
     if (!captchaToken) {
       return res.status(400).json({ error: 'Ungültiger Captcha-Token.' });
     }
@@ -62,16 +63,17 @@ app.post('/api/validate-captcha', async (req, res) => {
 
       // Rückmeldung an den CLient  
       if (!verifyResult.success) {
-        return res.status(400).json({ error: 'Captcha-Validierung ist fehlgeschlagen.' });
+        return res.status(400).json({ error: 'Captcha-Validierung ist fehlgeschlagen. Bitte erneut versuchen.' });
       }
       res.status(200).json({ message: 'Captcha ist erfolgreich validiert.' });
 
     } catch (error) {
-      console.error('Serverfehler bei der Captcha-Validierung: ', error);
       res.status(500).json({ error: 'Serverfehler bei der Validierung.' });
     }
   });
 
   app.listen(PORT || 3001, () => {
-    console.log(`Server läuft auf Port ${PORT || 3001}`);
+    console.log(`>> Server läuft auf Port ${PORT || 3001}`);
   });
+
+  export default app;
