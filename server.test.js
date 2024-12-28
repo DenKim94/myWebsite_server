@@ -1,6 +1,6 @@
 import request from 'supertest';
 import dotenv from 'dotenv';
-import app from './server'; // Importiere die Express-App aus der server.js-Datei
+import server from './server'; // Importiere die Express-App aus der server.js-Datei
 
 dotenv.config();
 
@@ -12,8 +12,13 @@ describe("Tests for Captcha and E-Mail Validation", () => {
   
   console.log(">> Blacklist @Test: ", process.env.EMAIL_BLACKLIST);
 
+  afterAll(() => {
+    // Schließen Sie hier alle offenen Verbindungen oder Timer
+    server.close();
+  });
+
   test("should return 400 if captchaToken is missing", async () => {
-    const response = await request(app)
+    const response = await request(server)
       .post(postURL)
       .send({ captchaToken: undefined, userEmail: mockUserEmail });
 
@@ -22,7 +27,7 @@ describe("Tests for Captcha and E-Mail Validation", () => {
   });
 
   test("should return 400 if 'userEmail' is on the blacklist", async () => {
-    const response = await request(app)
+    const response = await request(server)
       .post(postURL)
       .send({ captchaToken: mockCaptchaToken, userEmail: blockedEmail });
 
@@ -38,7 +43,7 @@ describe("Tests for Captcha and E-Mail Validation", () => {
       })
     );
 
-    const response = await request(app)
+    const response = await request(server)
       .post(postURL)
       .send({ captchaToken: mockCaptchaToken, userEmail: mockUserEmail });
 
@@ -54,7 +59,7 @@ describe("Tests for Captcha and E-Mail Validation", () => {
       })
     );
 
-    const response = await request(app)
+    const response = await request(server)
       .post(postURL)
       .send({ captchaToken: mockCaptchaToken, userEmail: mockUserEmail });
 
@@ -66,7 +71,7 @@ describe("Tests for Captcha and E-Mail Validation", () => {
     // Mock Fetch API to throw an error
     global.fetch = jest.fn(() => Promise.reject(new Error("Fetch failed")));
 
-    const response = await request(app)
+    const response = await request(server)
       .post(postURL)
       .send({ captchaToken: mockCaptchaToken, userEmail: mockUserEmail });
 

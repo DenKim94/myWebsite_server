@@ -72,8 +72,8 @@ app.post('/api/validate-captcha', async (req, res) => {
     }
   });
 
-  app.listen(PORT || 3001, () => {
+  const server = app.listen(PORT || 3001, () => {
     console.log(`>> Server läuft auf Port ${PORT || 3001}`);
   });
 
-  export default app;
+  export default server;
