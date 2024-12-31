@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
+import { blockEmail, updateLogFile } from './eMailBlocker.js';
 
 /**
  * Sendet eine POST-Anfrage an die angegebene URL, um die CAPTCHA-Antwort zu überprüfen.
@@ -23,6 +24,19 @@ if (!CAPTCHA_SECRET_KEY || !URL_CLIENT) {
 // Blacklist aus der .env-Datei in ein Array umwandeln
 const emailBlacklist = EMAIL_BLACKLIST ? EMAIL_BLACKLIST.split(',').map(email => email.trim().toLowerCase()) : [];
 console.log('>> Blacklist: ', emailBlacklist);
+
+// Einträge aus der Black-List in einer Log-Datei (lokal) ergänzen 
+if(emailBlacklist.length > 0) {
+  try {
+    // E-Mail-Adressen blockieren
+    emailBlacklist.forEach((email) => {
+      blockEmail(email);
+      updateLogFile();
+    });
+  } catch (error) {
+    console.error(">> Fehler im eMail-Blocker:", error);
+  }
+}
 
 const app = express();
 
