@@ -47,6 +47,15 @@ app.use(cors({
   methods: ['GET', 'POST'],
 }));
 
+// Wake-up Endpunkt
+app.get("/wakeup", (_, res) => {
+  try{
+    res.json({ message: "Server ist aktiv." });
+
+  }catch(error){
+    res.status(500).json({ error: "Serverfehler bei der Aktivierung." });
+  }
+});
 
 app.post('/api/validate-captcha', async (req, res) => {
 
@@ -54,14 +63,14 @@ app.post('/api/validate-captcha', async (req, res) => {
     const { captchaToken, userEmail } = req.body;
 
     if (!captchaToken) {
-      return res.status(400).json({ error: 'Ungültiger Captcha-Token.' });
+      return res.status(400).json({ error: "Ungültiger Captcha-Token." });
     }
 
     // Überprüfen, ob die erhaltene E-Mail-Adresse auf der Blacklist steht
     const isBlockedUser = emailBlacklist.includes(userEmail.toLowerCase());
 
     if (isBlockedUser) {
-      return res.status(400).json({ error: 'E-Mail-Adresse ist blockiert.' });
+      return res.status(400).json({ error: "E-Mail-Adresse ist blockiert." });
     }
 
     try {
@@ -77,12 +86,12 @@ app.post('/api/validate-captcha', async (req, res) => {
 
       // Rückmeldung an den CLient  
       if (!verifyResult.success) {
-        return res.status(400).json({ error: 'Captcha-Validierung ist fehlgeschlagen. Bitte erneut versuchen.' });
+        return res.status(400).json({ error: "Captcha-Validierung ist fehlgeschlagen. Bitte erneut versuchen." });
       }
-      res.status(200).json({ message: 'Captcha ist erfolgreich validiert.' });
+      res.status(200).json({ message: "Captcha ist erfolgreich validiert." });
 
     } catch (error) {
-      res.status(500).json({ error: 'Serverfehler bei der Validierung.' });
+      res.status(500).json({ error: "Serverfehler bei der Validierung." });
     }
   });
 

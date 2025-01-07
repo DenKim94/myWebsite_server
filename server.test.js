@@ -5,6 +5,7 @@ import server from './server'; // Importiere die Express-App aus der server.js-D
 dotenv.config();
 
 describe("Tests for Captcha and E-Mail Validation", () => {
+  
   const postURL = "/api/validate-captcha";  
   const mockCaptchaToken = "mock-captcha-token";
   const mockUserEmail = "test@example.com";
@@ -77,5 +78,17 @@ describe("Tests for Captcha and E-Mail Validation", () => {
 
     expect(response.status).toBe(500);
     expect(response.body).toEqual({ error: "Serverfehler bei der Validierung." });
+  });
+});
+
+describe("Tests for Wake-up Endpoint", () => {
+  const wakeUpURL = "/wakeup";
+
+  test("should return 200 and server is active", async () => {
+    const response = await request(server).get(wakeUpURL);
+
+    expect(response.status).toBe(200); 
+    expect(response.body).toHaveProperty("message"); 
+    expect(response.body.message).toBe("Server ist aktiv.");
   });
 });
