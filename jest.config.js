@@ -4,6 +4,6 @@ export default {
         '^.+\\.jsx?$': 'babel-jest', // Transformiert JavaScript-Dateien mit Babel
     },
     testMatch: [
-      "**/server/**/*.test.js"
+      "**/*.test.js"
     ],       
   };

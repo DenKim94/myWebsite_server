@@ -89,6 +89,6 @@ describe("Tests for Wake-up Endpoint", () => {
 
     expect(response.status).toBe(200); 
     expect(response.body).toHaveProperty("message"); 
-    expect(response.body.message).toBe("Server ist aktiv.");
+    expect(response.body.message).toBe("RP5-Server ist aktiv.");
   });
 });
