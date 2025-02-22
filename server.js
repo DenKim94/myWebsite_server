@@ -47,16 +47,17 @@ app.use(cors({
   methods: ['GET', 'POST'],
 }));
 
-// Wake-up Endpunkt
+// wakeup Endpunkt
 app.get("/wakeup", (_, res) => {
   try{
-    res.json({ message: "Server ist aktiv." });
+    res.json({ message: "RP5-Server ist aktiv." });
 
   }catch(error){
     res.status(500).json({ error: "Serverfehler bei der Aktivierung." });
   }
 });
 
+// validate-captcha Endpunkt
 app.post('/api/validate-captcha', async (req, res) => {
 
     // Captcha-Token und E-Mail vom Client erhalten
